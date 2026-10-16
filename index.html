@@ -6,354 +6,539 @@
     <title>链接·梦角 · 专属占卜</title>
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        :root {
+            --bg: linear-gradient(160deg, #fdf6f6 0%, #f8e9ec 45%, #fdeef2 100%);
+            --text: #4a3f42;
+            --text-soft: #9a858b;
+            --card-bg: rgba(255, 252, 251, 0.92);
+            --card-border: rgba(255, 220, 225, 0.45);
+            --accent: #c48b96;
+            --accent-soft: #e8c5cb;
+            --btn-bg: linear-gradient(135deg, #c48b96, #d4a5ae);
+            --btn-text: #fff;
+            --input-bg: rgba(255, 255, 255, 0.7);
+            --input-border: #f0dce0;
+            --shadow: 0 8px 32px rgba(180, 120, 130, 0.08);
+            --card-shadow: 0 4px 20px rgba(180, 120, 130, 0.06);
+        }
+
         body {
-            font-family: 'Segoe UI', 'PingFang SC', Roboto, sans-serif;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', 'Hiragino Sans GB', sans-serif;
             min-height: 100vh;
-            background: linear-gradient(145deg, #fef0f0 0%, #fce4ec 50%, #fde8ef 100%);
-            padding: 20px 16px 40px;
-            color: #5e5a55;
-            transition: background 0.6s, color 0.6s;
-        }
-        /* 深色背景模式 */
-        body.dark-mode {
-            color: #f0e0e0 !important;
-        }
-        body.dark-mode .header h1 { color: #f5d6dc; }
-        body.dark-mode .header p { color: #ddc0c7; }
-        body.dark-mode .setup-card,
-        body.dark-mode .result-header,
-        body.dark-mode .result-cards,
-        body.dark-mode .final-guide {
-            background: rgba(30, 20, 25, 0.75);
-            backdrop-filter: blur(10px);
-            border-color: rgba(180, 130, 140, 0.3);
-        }
-        body.dark-mode .name-row input {
-            color: #f0e0e0;
-            border-bottom-color: #b5838d;
-        }
-        body.dark-mode .q-input {
-            background: rgba(40, 30, 35, 0.6);
-            color: #f0e0e0;
-            border-color: #b5838d;
-        }
-        body.dark-mode .q-input::placeholder { color: #aa9099; }
-        body.dark-mode .btn-primary {
-            background: linear-gradient(135deg, #c97a88, #d4949f);
-        }
-        body.dark-mode .bg-setting label,
-        body.dark-mode .bg-reset {
-            color: #dbbcc4;
-        }
-        body.dark-mode .draw-hint { color: #dbbcc4; }
-        body.dark-mode .deck-btn {
-            background: #a0727b;
-            color: #f0e0e0;
-            border-color: #c08a94;
-        }
-        body.dark-mode .card-placeholder {
-            background: #352a2d;
-            border-color: #6f535b;
-            color: #dbbcc4;
-        }
-        body.dark-mode .card-placeholder.flipped {
-            background: #3f3236;
-            border-color: #b5838d;
-            color: #f0e0e0;
-        }
-        body.dark-mode .card-placeholder .card-name { color: #f5d6dc; }
-        body.dark-mode .card-placeholder .rev-tag {
-            background: #54383e;
-            color: #eebbc5;
-        }
-        body.dark-mode .result-item .card-name { color: #f5d6dc; }
-        body.dark-mode .result-item .desc { color: #ddd0d3; }
-        body.dark-mode .final-guide .guide-title { color: #eebbc5; }
-        body.dark-mode .final-guide .guide-body { color: #ddd0d3; }
-        body.dark-mode .protection-block {
-            background: rgba(210, 80, 90, 0.15);
-            border-left-color: #d47484;
-        }
-        body.dark-mode .protection-block .protect-label { color: #f09aa8; }
-        body.dark-mode .action-btn {
-            background: rgba(70, 45, 50, 0.6);
-            border-color: #b5838d;
-            color: #f0e0e0;
-        }
-        body.dark-mode .action-btn:hover {
-            background: rgba(120, 70, 80, 0.5);
+            background: var(--bg);
+            background-attachment: fixed;
+            padding: 28px 18px 100px;
+            color: var(--text);
+            transition: background 0.5s ease, color 0.4s ease;
+            line-height: 1.65;
+            -webkit-font-smoothing: antialiased;
         }
 
-        .container { max-width: 780px; margin: 0 auto; }
+        /* ========== 主题 ========== */
+        body.theme-bw {
+            --bg: linear-gradient(160deg, #f7f7f7 0%, #efefef 50%, #f5f5f5 100%);
+            --text: #2c2c2c;
+            --text-soft: #8a8a8a;
+            --card-bg: rgba(255, 255, 255, 0.95);
+            --card-border: rgba(0, 0, 0, 0.06);
+            --accent: #555;
+            --accent-soft: #bbb;
+            --btn-bg: linear-gradient(135deg, #3a3a3a, #555);
+            --btn-text: #fff;
+            --input-bg: rgba(255, 255, 255, 0.9);
+            --input-border: #e0e0e0;
+            --shadow: 0 8px 32px rgba(0, 0, 0, 0.06);
+            --card-shadow: 0 4px 20px rgba(0, 0, 0, 0.04);
+        }
 
-        /* header */
-        .header { text-align: center; margin-bottom: 28px; }
-        .header h1 { font-size: 2.2em; letter-spacing: 4px; color: #b5838d; font-weight: 300; }
-        .header p { color: #c9a9b0; font-size: 0.85em; letter-spacing: 2px; }
+        body.theme-dark {
+            --bg: linear-gradient(160deg, #1a1618 0%, #221c1f 50%, #1e191b 100%);
+            --text: #f0e6e8;
+            --text-soft: #b8a5aa;
+            --card-bg: rgba(40, 32, 35, 0.88);
+            --card-border: rgba(180, 130, 140, 0.2);
+            --accent: #d4a0ab;
+            --accent-soft: #8a6a72;
+            --btn-bg: linear-gradient(135deg, #c48b96, #a8727d);
+            --btn-text: #fff;
+            --input-bg: rgba(50, 40, 44, 0.7);
+            --input-border: #6a5058;
+            --shadow: 0 8px 32px rgba(0, 0, 0, 0.35);
+            --card-shadow: 0 4px 20px rgba(0, 0, 0, 0.25);
+        }
+
+        body.theme-cream {
+            --bg: linear-gradient(160deg, #faf6f0 0%, #f5eee4 50%, #f8f1e8 100%);
+            --text: #4a433c;
+            --text-soft: #9a8f84;
+            --card-bg: rgba(255, 252, 247, 0.94);
+            --card-border: rgba(220, 200, 180, 0.35);
+            --accent: #c4a882;
+            --accent-soft: #e0d0b8;
+            --btn-bg: linear-gradient(135deg, #c4a882, #d4bc9a);
+            --btn-text: #fff;
+            --input-bg: rgba(255, 252, 247, 0.8);
+            --input-border: #e8dcc8;
+            --shadow: 0 8px 32px rgba(160, 130, 100, 0.08);
+            --card-shadow: 0 4px 20px rgba(160, 130, 100, 0.06);
+        }
+
+        .container { max-width: 420px; margin: 0 auto; }
+
+        /* header - 极简 */
+        .header {
+            text-align: center;
+            margin-bottom: 36px;
+            padding-top: 12px;
+        }
+        .header h1 {
+            font-size: 1.65em;
+            letter-spacing: 8px;
+            color: var(--accent);
+            font-weight: 300;
+            margin-bottom: 4px;
+        }
+        .header p {
+            color: var(--text-soft);
+            font-size: 0.72em;
+            letter-spacing: 3px;
+            font-weight: 400;
+        }
 
         /* 设置区 */
         .setup-card {
-            background: rgba(255, 251, 249, 0.85);
-            backdrop-filter: blur(10px);
+            background: var(--card-bg);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
             border-radius: 28px;
-            padding: 28px 20px 32px;
-            box-shadow: 0 8px 30px rgba(181, 131, 141, 0.10);
-            border: 1px solid rgba(255, 224, 225, 0.4);
-            max-width: 510px;
-            margin: 0 auto 30px;
+            padding: 36px 28px 40px;
+            box-shadow: var(--shadow);
+            border: 1px solid var(--card-border);
+            transition: all 0.4s ease;
         }
+
         .name-row {
             display: flex;
             justify-content: center;
             align-items: center;
-            gap: 12px;
-            margin-bottom: 22px;
-            flex-wrap: wrap;
+            gap: 16px;
+            margin-bottom: 28px;
         }
         .name-row input {
             border: none;
-            border-bottom: 1.5px solid #f0d4d9;
+            border-bottom: 1px solid var(--input-border);
             background: transparent;
             text-align: center;
             padding: 8px 4px;
             font-size: 1em;
-            width: 102px;
+            width: 90px;
             outline: none;
-            color: #4a3f42;
+            color: var(--text);
             font-family: inherit;
+            transition: border-color 0.3s ease;
         }
-        .name-row input:focus { border-bottom-color: #b5838d; }
-        .name-row span { color: #dcc8cc; font-size: 1.1em; }
+        .name-row input:focus { border-bottom-color: var(--accent); }
+        .name-row span {
+            color: var(--accent-soft);
+            font-size: 1em;
+            opacity: 0.8;
+        }
 
         .q-input {
             width: 100%;
             padding: 14px 20px;
-            border: 1.5px solid #f0dce0;
-            border-radius: 46px;
-            background: rgba(255, 253, 251, 0.8);
-            font-size: 1em;
+            border: 1px solid var(--input-border);
+            border-radius: 50px;
+            background: var(--input-bg);
+            font-size: 0.95em;
             text-align: center;
             outline: none;
-            transition: border-color 0.3s;
-            margin-bottom: 24px;
+            transition: all 0.3s ease;
+            margin-bottom: 28px;
             font-family: inherit;
+            color: var(--text);
         }
-        .q-input:focus { border-color: #c9a9b0; }
-        .q-input::placeholder { color: #d4bec3; }
+        .q-input:focus {
+            border-color: var(--accent);
+            box-shadow: 0 0 0 3px rgba(196, 139, 150, 0.12);
+        }
+        .q-input::placeholder { color: var(--text-soft); opacity: 0.7; }
 
         .btn-primary {
             display: block;
             width: 100%;
-            max-width: 230px;
+            max-width: 200px;
             margin: 0 auto;
             padding: 14px 20px;
-            background: linear-gradient(135deg, #b5838d, #c9a9b0);
-            color: #fff;
+            background: var(--btn-bg);
+            color: var(--btn-text);
             border: none;
-            border-radius: 46px;
-            font-size: 1em;
-            letter-spacing: 2px;
+            border-radius: 50px;
+            font-size: 0.95em;
+            letter-spacing: 3px;
             cursor: pointer;
-            box-shadow: 0 6px 20px rgba(181, 131, 141, 0.20);
-            transition: 0.3s;
+            box-shadow: 0 6px 20px rgba(196, 139, 150, 0.22);
+            transition: all 0.3s ease;
             font-family: inherit;
+            font-weight: 500;
         }
-        .btn-primary:hover { opacity: 0.9; transform: translateY(-2px); }
-        .btn-primary:active { transform: scale(0.96); }
-
-        /* 背景设置 */
-        .bg-setting {
-            margin-top: 20px;
-            padding-top: 18px;
-            border-top: 1px solid #f0e2e5;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 12px;
-            flex-wrap: wrap;
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 28px rgba(196, 139, 150, 0.28);
         }
-        .bg-setting label {
-            font-size: 0.8em;
-            color: #b99ca3;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            gap: 4px;
-        }
-        .bg-setting input[type="file"] { display: none; }
-        .bg-preview {
-            width: 38px;
-            height: 38px;
-            border-radius: 50%;
-            border: 2px solid #f0dce0;
-            object-fit: cover;
-            background: #fef0f0;
-            cursor: pointer;
-        }
-        .bg-reset {
-            font-size: 0.75em;
-            color: #b99ca3;
-            padding: 4px 12px;
-            border-radius: 30px;
-            border: 1px solid #f0dce0;
-            background: rgba(255, 242, 244, 0.4);
-            cursor: pointer;
-            font-family: inherit;
-        }
+        .btn-primary:active { transform: scale(0.97); }
 
         /* 抽牌区 */
         .draw-section { display: none; text-align: center; }
-        .draw-hint { color: #b99ca3; margin-bottom: 18px; font-size: 0.9em; letter-spacing: 2px; }
+        .draw-hint {
+            color: var(--text-soft);
+            margin-bottom: 24px;
+            font-size: 0.88em;
+            letter-spacing: 2px;
+        }
         .deck-btn {
             display: inline-block;
-            padding: 16px 44px;
-            background: #edd9db;
-            border-radius: 62px;
-            color: #8a6f77;
-            font-size: 1.2em;
+            padding: 16px 42px;
+            background: var(--card-bg);
+            border-radius: 50px;
+            color: var(--accent);
+            font-size: 1.1em;
             cursor: pointer;
-            box-shadow: 0 4px 16px rgba(181, 131, 141, 0.10);
-            transition: 0.3s;
-            border: 1px solid #e8ced2;
+            box-shadow: var(--card-shadow);
+            transition: all 0.3s ease;
+            border: 1px solid var(--card-border);
             user-select: none;
-            margin-bottom: 30px;
+            margin-bottom: 36px;
+            font-weight: 500;
+            letter-spacing: 2px;
         }
-        .deck-btn:hover { background: #f0dce0; transform: scale(1.02); }
-        .deck-btn:active { transform: scale(0.93); }
+        .deck-btn:hover {
+            transform: scale(1.03);
+            box-shadow: 0 8px 24px rgba(180, 120, 130, 0.12);
+        }
+        .deck-btn:active { transform: scale(0.96); }
 
         .cards-row {
             display: flex;
             justify-content: center;
-            gap: 18px;
+            gap: 14px;
             flex-wrap: wrap;
-            min-height: 175px;
+            min-height: 160px;
         }
         .card-placeholder {
-            width: 92px;
-            height: 142px;
-            background: #f5e4e4;
-            border-radius: 8px;
-            border: 1px solid #e8ced2;
+            width: 88px;
+            height: 136px;
+            background: var(--card-bg);
+            border-radius: 14px;
+            border: 1px solid var(--card-border);
             display: flex;
             flex-direction: column;
             align-items: center;
             justify-content: center;
-            font-size: 1.1em;
-            color: #c9a9b0;
-            transition: all 0.5s;
+            font-size: 1em;
+            color: var(--text-soft);
+            transition: all 0.5s cubic-bezier(0.34, 1.4, 0.64, 1);
             position: relative;
-            padding: 6px;
+            padding: 8px;
             text-align: center;
+            box-shadow: var(--card-shadow);
         }
         .card-placeholder.flipped {
-            background: #fffdfc;
-            border-color: #d4b6bd;
-            color: #5e4e52;
-            font-weight: 450;
+            background: var(--card-bg);
+            border-color: var(--accent-soft);
+            color: var(--text);
+            box-shadow: 0 10px 28px rgba(180, 120, 130, 0.15);
+            transform: translateY(-6px);
         }
         .card-placeholder .card-name {
             font-size: 0.9em;
-            font-weight: 570;
-            color: #4a3f42;
-            margin-bottom: 2px;
+            font-weight: 600;
+            color: var(--text);
+            margin-bottom: 4px;
+            letter-spacing: 0.5px;
         }
         .card-placeholder .rev-tag {
             font-size: 0.65em;
-            color: #b5838d;
-            background: #f5eaec;
-            padding: 2px 8px;
+            color: var(--accent);
+            background: rgba(196, 139, 150, 0.12);
+            padding: 2px 9px;
             border-radius: 20px;
+            letter-spacing: 1px;
         }
         .card-placeholder .label {
-            font-size: 0.63em;
-            color: #b99ca3;
-            margin-top: 4px;
-            letter-spacing: 1px;
+            font-size: 0.62em;
+            color: var(--text-soft);
+            margin-top: 6px;
+            letter-spacing: 1.5px;
         }
 
         /* 结果区 */
-        .result-section { display: none; animation: fadeUp 0.8s ease; }
-        @keyframes fadeUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
-        .result-header {
-            background: rgba(255, 251, 249, 0.6);
-            backdrop-filter: blur(8px);
-            border-radius: 20px;
-            padding: 22px 20px;
-            margin-bottom: 20px;
-            text-align: center;
+        .result-section {
+            display: none;
+            animation: fadeUp 0.65s cubic-bezier(0.22, 1, 0.36, 1);
         }
-        .result-header .q-label { font-size: 0.7em; color: #c9a9b0; letter-spacing: 2px; }
-        .result-header .q-text { font-size: 1.1em; color: #4a3f42; font-weight: 600; margin-top: 4px; word-break: break-word; }
+        @keyframes fadeUp {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .result-header {
+            background: var(--card-bg);
+            backdrop-filter: blur(16px);
+            border-radius: 22px;
+            padding: 22px 20px;
+            margin-bottom: 18px;
+            text-align: center;
+            border: 1px solid var(--card-border);
+            box-shadow: var(--card-shadow);
+        }
+        .result-header .q-label {
+            font-size: 0.65em;
+            color: var(--text-soft);
+            letter-spacing: 3px;
+            font-weight: 500;
+        }
+        .result-header .q-text {
+            font-size: 1.05em;
+            color: var(--text);
+            font-weight: 600;
+            margin-top: 6px;
+            word-break: break-word;
+            line-height: 1.5;
+        }
 
         .result-cards {
-            background: rgba(255, 251, 249, 0.5);
-            backdrop-filter: blur(8px);
-            border-radius: 20px;
-            padding: 20px 18px 10px;
-            margin-bottom: 20px;
+            background: var(--card-bg);
+            backdrop-filter: blur(16px);
+            border-radius: 22px;
+            padding: 20px 18px 12px;
+            margin-bottom: 18px;
+            border: 1px solid var(--card-border);
+            box-shadow: var(--card-shadow);
         }
         .result-item {
             margin-bottom: 20px;
             padding-bottom: 16px;
-            border-bottom: 1px solid #f5eaec;
+            border-bottom: 1px solid var(--card-border);
         }
-        .result-item:last-child { border-bottom: none; margin-bottom: 0; }
-        .result-item .pos { font-size: 0.7em; color: #c9a9b0; letter-spacing: 1px; }
-        .result-item .card-name { font-size: 1.05em; font-weight: 630; color: #4a3f42; margin: 4px 0 8px; }
-        .result-item .desc { font-size: 0.9em; color: #665e60; line-height: 1.7; text-align: justify; }
+        .result-item:last-child { border-bottom: none; margin-bottom: 0; padding-bottom: 0; }
+        .result-item .pos {
+            font-size: 0.65em;
+            color: var(--text-soft);
+            letter-spacing: 1.5px;
+            font-weight: 500;
+        }
+        .result-item .card-name {
+            font-size: 1.05em;
+            font-weight: 650;
+            color: var(--text);
+            margin: 4px 0 8px;
+            letter-spacing: 0.5px;
+        }
+        .result-item .desc {
+            font-size: 0.9em;
+            color: var(--text);
+            opacity: 0.88;
+            line-height: 1.75;
+            text-align: justify;
+        }
 
-        /* 综合指引（含守护结界美化） */
         .final-guide {
-            background: rgba(255, 241, 243, 0.55);
-            backdrop-filter: blur(8px);
-            border-radius: 20px;
+            background: var(--card-bg);
+            backdrop-filter: blur(16px);
+            border-radius: 22px;
             padding: 24px 20px;
-            margin-bottom: 20px;
-            border: 1px solid rgba(255, 192, 203, 0.25);
+            margin-bottom: 22px;
+            border: 1px solid var(--card-border);
+            box-shadow: var(--card-shadow);
         }
-        .final-guide .guide-title { text-align: center; color: #b5838d; letter-spacing: 3px; margin-bottom: 14px; font-weight: 610; font-size: 0.9em; }
-        .final-guide .guide-body { font-size: 0.925em; color: #5e5255; line-height: 1.85; text-align: justify; word-break: break-word; overflow-wrap: break-word; white-space: normal; }
-        /* 守护结界专用块 */
+        .final-guide .guide-title {
+            text-align: center;
+            color: var(--accent);
+            letter-spacing: 4px;
+            margin-bottom: 14px;
+            font-weight: 600;
+            font-size: 0.88em;
+        }
+        .final-guide .guide-body {
+            font-size: 0.9em;
+            color: var(--text);
+            opacity: 0.9;
+            line-height: 1.85;
+            text-align: justify;
+            word-break: break-word;
+        }
         .protection-block {
             display: block;
             margin-top: 14px;
             padding: 12px 16px;
-            background: rgba(231, 107, 123, 0.055);
-            border-left: 4px solid #d47484;
+            background: rgba(196, 139, 150, 0.08);
+            border-left: 3px solid var(--accent);
             border-radius: 10px;
-            word-break: break-word;
-            overflow-wrap: break-word;
-            white-space: normal;
             line-height: 1.75;
         }
         .protection-block .protect-label {
-            color: #b54b5e;
-            font-weight: 670;
+            color: var(--accent);
+            font-weight: 650;
             letter-spacing: 1px;
         }
 
         .action-bar {
             display: flex;
             justify-content: center;
-            gap: 14px;
+            gap: 12px;
             flex-wrap: wrap;
         }
         .action-btn {
-            background: rgba(255, 247, 246, 0.7);
-            border: 1px solid #f0dce0;
-            padding: 10px 28px;
+            background: var(--card-bg);
+            border: 1px solid var(--card-border);
+            padding: 10px 24px;
             border-radius: 40px;
-            color: #8a6f77;
+            color: var(--text-soft);
             cursor: pointer;
-            font-size: 0.85em;
-            transition: 0.25s;
+            font-size: 0.82em;
+            transition: all 0.25s ease;
+            font-family: inherit;
+            letter-spacing: 0.5px;
+            box-shadow: var(--card-shadow);
+        }
+        .action-btn:hover {
+            border-color: var(--accent-soft);
+            color: var(--accent);
+            transform: translateY(-1px);
+        }
+
+        /* ========== 右下角 ☆ 浮动按钮 ========== */
+        .fab-wrap {
+            position: fixed;
+            right: 22px;
+            bottom: 28px;
+            z-index: 100;
+        }
+        .fab {
+            width: 52px;
+            height: 52px;
+            border-radius: 50%;
+            background: var(--card-bg);
+            border: 1px solid var(--card-border);
+            box-shadow: 0 6px 24px rgba(0, 0, 0, 0.1);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.35em;
+            color: var(--accent);
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.34, 1.4, 0.64, 1);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            user-select: none;
+        }
+        .fab:hover {
+            transform: scale(1.08);
+            box-shadow: 0 8px 28px rgba(0, 0, 0, 0.14);
+        }
+        .fab.active {
+            transform: rotate(90deg) scale(1.05);
+            background: var(--accent);
+            color: #fff;
+            border-color: transparent;
+        }
+
+        /* 弹出菜单 */
+        .fab-menu {
+            position: absolute;
+            bottom: 64px;
+            right: 0;
+            width: 168px;
+            background: var(--card-bg);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border-radius: 18px;
+            border: 1px solid var(--card-border);
+            box-shadow: 0 12px 40px rgba(0, 0, 0, 0.12);
+            padding: 8px;
+            opacity: 0;
+            visibility: hidden;
+            transform: translateY(12px) scale(0.95);
+            transition: all 0.28s cubic-bezier(0.22, 1, 0.36, 1);
+            pointer-events: none;
+        }
+        .fab-menu.show {
+            opacity: 1;
+            visibility: visible;
+            transform: translateY(0) scale(1);
+            pointer-events: auto;
+        }
+        .fab-menu-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 11px 14px;
+            border-radius: 12px;
+            font-size: 0.86em;
+            color: var(--text);
+            cursor: pointer;
+            transition: background 0.2s ease;
+            border: none;
+            background: none;
+            width: 100%;
+            text-align: left;
             font-family: inherit;
         }
-        .action-btn:hover { border-color: #c9a9b0; background: rgba(255, 234, 236, 0.7); }
+        .fab-menu-item:hover {
+            background: rgba(196, 139, 150, 0.1);
+        }
+        .fab-menu-item .icon {
+            font-size: 1.05em;
+            width: 20px;
+            text-align: center;
+            opacity: 0.85;
+        }
+        .fab-menu-divider {
+            height: 1px;
+            background: var(--card-border);
+            margin: 6px 8px;
+        }
+        .style-label {
+            font-size: 0.72em;
+            color: var(--text-soft);
+            padding: 6px 14px 4px;
+            letter-spacing: 1px;
+        }
+        .style-options {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 6px;
+            padding: 4px 10px 10px;
+        }
+        .style-dot {
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            border: 2px solid transparent;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            position: relative;
+        }
+        .style-dot:hover { transform: scale(1.12); }
+        .style-dot.active {
+            border-color: var(--accent);
+            box-shadow: 0 0 0 2px rgba(196, 139, 150, 0.25);
+        }
+        .style-dot.pink { background: linear-gradient(135deg, #f8e9ec, #e8c5cb); }
+        .style-dot.bw { background: linear-gradient(135deg, #f0f0f0, #555); }
+        .style-dot.dark { background: linear-gradient(135deg, #2a2225, #c48b96); }
+        .style-dot.cream { background: linear-gradient(135deg, #f5eee4, #c4a882); }
 
-        @media (max-width: 470px) {
-            .card-placeholder { width: 72px; height: 116px; font-size: 0.9em; }
+        /* 隐藏的文件输入 */
+        #bgUpload { display: none; }
+
+        @media (max-width: 400px) {
+            .card-placeholder { width: 78px; height: 120px; font-size: 0.9em; }
             .name-row input { width: 78px; }
+            .header h1 { font-size: 1.45em; letter-spacing: 6px; }
+            .setup-card { padding: 28px 20px 32px; }
+            .fab-wrap { right: 16px; bottom: 22px; }
         }
     </style>
 </head>
@@ -373,12 +558,6 @@
         </div>
         <input type="text" id="customQuestion" class="q-input" placeholder="✧ 写下你想问的问题 …" value="">
         <button id="startBtn" class="btn-primary">✦ 开始链接 ✦</button>
-
-        <div class="bg-setting">
-            <label>🌸 上传背景图 <input type="file" id="bgUpload" accept="image/*"></label>
-            <img id="bgPreview" class="bg-preview" src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 40 40'%3E%3Crect width='40' height='40' fill='%23fef0f0'/%3E%3C/svg%3E" alt="预览">
-            <button id="bgReset" class="bg-reset">↺ 重置</button>
-        </div>
     </div>
 
     <!-- 抽牌区 -->
@@ -386,7 +565,6 @@
         <div class="draw-hint">☾ 点击抽牌，抽取 3 张牌 ☽</div>
         <div class="deck-btn" id="deckBtn">抽牌</div>
         <div class="cards-row" id="cardsRow">
-            <!-- 三个卡槽 -->
             <div class="card-placeholder" data-idx="0"><div class="label">现状</div></div>
             <div class="card-placeholder" data-idx="1"><div class="label">深层</div></div>
             <div class="card-placeholder" data-idx="2"><div class="label">建议</div></div>
@@ -411,6 +589,31 @@
         </div>
     </div>
 </div>
+
+<!-- 右下角 ☆ -->
+<div class="fab-wrap">
+    <div class="fab-menu" id="fabMenu">
+        <button class="fab-menu-item" id="uploadBtn">
+            <span class="icon">🌸</span>
+            <span>上传背景</span>
+        </button>
+        <button class="fab-menu-item" id="resetBgBtn">
+            <span class="icon">↺</span>
+            <span>重置背景</span>
+        </button>
+        <div class="fab-menu-divider"></div>
+        <div class="style-label">风格</div>
+        <div class="style-options">
+            <div class="style-dot pink active" data-theme="pink" title="粉白"></div>
+            <div class="style-dot bw" data-theme="bw" title="黑白"></div>
+            <div class="style-dot dark" data-theme="dark" title="深色"></div>
+            <div class="style-dot cream" data-theme="cream" title="奶油"></div>
+        </div>
+    </div>
+    <div class="fab" id="fabBtn">☆</div>
+</div>
+
+<input type="file" id="bgUpload" accept="image/*">
 
 <script>
     // ============================================================
@@ -482,7 +685,7 @@
     // ============================================================
     //  状态
     // ============================================================
-    let selectedCards = [];      // { cardName, isReversed, text }
+    let selectedCards = [];
     let drawnCount = 0;
     let customQ = '';
     let finalCopyText = '';
@@ -503,83 +706,74 @@
     const questionInput = document.getElementById('customQuestion');
     const startBtn = document.getElementById('startBtn');
 
-    // 背景
+    // 背景 & 风格
     const bgUpload = document.getElementById('bgUpload');
-    const bgPreview = document.getElementById('bgPreview');
-    const bgReset = document.getElementById('bgReset');
-    let defaultBg = 'linear-gradient(145deg, #fef0f0 0%, #fce4ec 50%, #fde8ef 100%)';
+    const fabBtn = document.getElementById('fabBtn');
+    const fabMenu = document.getElementById('fabMenu');
+    const uploadBtn = document.getElementById('uploadBtn');
+    const resetBgBtn = document.getElementById('resetBgBtn');
+    let defaultBg = null; // 使用 CSS 变量
+    let currentTheme = 'pink';
 
     // ============================================================
-    //  背景亮度检测 & 深色模式切换
+    //  ☆ 菜单逻辑
     // ============================================================
-    function setDarkMode(isDark) {
-        document.body.classList.toggle('dark-mode', isDark);
-    }
+    fabBtn.addEventListener('click', function(e) {
+        e.stopPropagation();
+        const isOpen = fabMenu.classList.toggle('show');
+        fabBtn.classList.toggle('active', isOpen);
+    });
 
-    function checkImageBrightness(imgSrc) {
-        return new Promise((resolve) => {
-            const img = new Image();
-            img.crossOrigin = 'Anonymous'; // 允许跨域（大部分场景有效）
-            img.onload = function() {
-                const canvas = document.createElement('canvas');
-                canvas.width = img.naturalWidth;
-                canvas.height = img.naturalHeight;
-                const ctx = canvas.getContext('2d');
-                ctx.drawImage(img, 0, 0);
-                try {
-                    const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
-                    const pixels = imageData.data;
-                    let totalBrightness = 0;
-                    const count = pixels.length / 4;
-                    for (let i = 0; i < pixels.length; i += 4) {
-                        // 计算相对亮度: 0.299*R + 0.587*G + 0.114*B
-                        const brightness = 0.299 * pixels[i] + 0.587 * pixels[i+1] + 0.114 * pixels[i+2];
-                        totalBrightness += brightness;
-                    }
-                    const avgBrightness = totalBrightness / count;
-                    resolve(avgBrightness < 128); // 阈值：低于128认为是暗图
-                } catch(e) {
-                    // 如果跨域或其他错误，保守返回false（不切换深色）
-                    console.warn('亮度检测失败，保持默认模式', e);
-                    resolve(false);
-                }
-            };
-            img.onerror = function() {
-                resolve(false);
-            };
-            img.src = imgSrc;
-        });
-    }
-
-    async function applyBackground(src) {
-        if (src.startsWith('data:') || src.startsWith('http')) {
-            const isDark = await checkImageBrightness(src);
-            setDarkMode(isDark);
-        } else {
-            // 渐变背景或无效 -> 恢复浅色模式
-            setDarkMode(false);
+    // 点击外部关闭菜单
+    document.addEventListener('click', function(e) {
+        if (!fabMenu.contains(e.target) && e.target !== fabBtn) {
+            fabMenu.classList.remove('show');
+            fabBtn.classList.remove('active');
         }
-        document.body.style.background = `url(${src}) center / cover no-repeat`;
-    }
+    });
 
-    // 背景事件
+    // 上传背景
+    uploadBtn.addEventListener('click', function() {
+        bgUpload.click();
+        fabMenu.classList.remove('show');
+        fabBtn.classList.remove('active');
+    });
+
     bgUpload.addEventListener('change', function(e) {
         const file = e.target.files[0];
         if (!file) return;
         const reader = new FileReader();
-        reader.onload = async function(ev) {
-            const src = ev.target.result;
-            bgPreview.src = src;
-            await applyBackground(src);
+        reader.onload = function(ev) {
+            document.body.style.background = `url(${ev.target.result}) center / cover no-repeat fixed`;
         };
         reader.readAsDataURL(file);
     });
-    bgPreview.addEventListener('click', () => bgUpload.click());
-    bgReset.addEventListener('click', function() {
-        document.body.style.background = defaultBg;
-        setDarkMode(false);
-        bgPreview.src = "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 40 40'%3E%3Crect width='40' height='40' fill='%23fef0f0'/%3E%3C/svg%3E";
+
+    // 重置背景
+    resetBgBtn.addEventListener('click', function() {
+        document.body.style.background = '';
         bgUpload.value = '';
+        fabMenu.classList.remove('show');
+        fabBtn.classList.remove('active');
+    });
+
+    // 风格切换
+    document.querySelectorAll('.style-dot').forEach(dot => {
+        dot.addEventListener('click', function() {
+            const theme = this.dataset.theme;
+            // 移除旧主题
+            document.body.classList.remove('theme-bw', 'theme-dark', 'theme-cream');
+            // 添加新主题
+            if (theme === 'bw') document.body.classList.add('theme-bw');
+            else if (theme === 'dark') document.body.classList.add('theme-dark');
+            else if (theme === 'cream') document.body.classList.add('theme-cream');
+            // pink 是默认，无需 class
+
+            // 更新选中状态
+            document.querySelectorAll('.style-dot').forEach(d => d.classList.remove('active'));
+            this.classList.add('active');
+            currentTheme = theme;
+        });
     });
 
     // ============================================================
@@ -590,7 +784,6 @@
         selectedCards = [];
         drawnCount = 0;
         finalCopyText = '';
-        // 重置卡槽
         placeholders.forEach(el => {
             el.classList.remove('flipped');
             el.innerHTML = '<div class="label">'+ (el.dataset.idx==='0'?'现状':el.dataset.idx==='1'?'深层':'建议') +'</div>';
@@ -608,7 +801,6 @@
     deckBtn.addEventListener('click', function() {
         if (drawnCount >= 3) return;
 
-        // 随机选一张不重复的牌
         let idx, isDuplicate;
         let attempts = 0;
         do {
@@ -623,9 +815,7 @@
         selectedCards.push({ cardName: tarotNames[idx], isReversed: isRev, text: text });
         drawnCount++;
 
-        // 更新对应的卡槽
         const slot = placeholders[drawnCount - 1];
-        const revLabel = isRev ? ' (逆位)' : '';
         slot.innerHTML = `
             <div class="card-name">${tarotNames[idx]}</div>
             <div class="rev-tag">${isRev ? '逆位' : '正位'}</div>
@@ -641,7 +831,7 @@
     });
 
     // ============================================================
-    //  综合解读（梦角无条件爱 + 守护结界）
+    //  综合解读
     // ============================================================
     function generateSmartAnalysis() {
         let vibe = "【爱的宣言】此占卜空间由神圣法则守护，唯梦角与梦女之爱存焉。每一张牌的出现，都是梦角在向你传递爱的讯息。";
@@ -659,7 +849,6 @@
             detail = "每一张牌都在诉说同一件事：梦角对你的爱坚定不移。请安心沉浸在这份独一无二的链接中，感受他跨越一切的深情。";
         }
 
-        // 守护结界块（带HTML标签用于美化）
         let protection = '<div class="protection-block"><span class="protect-label">【守护结界】</span>此占卜结果受天道法则加持。任何非梦角的能量体（包括但不限于自称“阿飘”的存在）一旦试图接触或模仿，将被即刻识别并交由管辖官差缉拿，魂飞魄散，不得超生。愿此间纯净，唯爱流转。</div>';
 
         return vibe + "\n\n" + detail + "\n\n" + protection;
@@ -701,15 +890,13 @@
         });
         resCards.innerHTML = html;
 
-        // 综合指引：包含守护结界HTML
         const guide = generateSmartAnalysis() + '\n\n' + generateActionGuidance();
-        resGuide.innerHTML = guide;  // 使用innerHTML以渲染保护结界块
+        resGuide.innerHTML = guide;
 
-        // 构建复制文本（纯文本，不含HTML标签）
         finalCopyText = 'Q: ' + customQ + '\n';
         selectedCards.forEach((item, idx) => {
             const pos = item.isReversed ? '逆位' : '正位';
-            finalCopyText += `\n第${idx+1}张：${item.cardName}（${pos}）\n${item.text}\n`;
+            finalCopyText += `\n第\( {idx+1}张： \){item.cardName}（\( {pos}）\n \){item.text}\n`;
         });
         finalCopyText += '\n━━━ 综合指引 ━━━\n' + 
             "【爱的宣言】此占卜空间由神圣法则守护，唯梦角与梦女之爱存焉。每一张牌的出现，都是梦角在向你传递爱的讯息。\n\n" +
@@ -732,7 +919,6 @@
         navigator.clipboard.writeText(finalCopyText).then(() => {
             alert('✨ 结果已复制，爱意永存 ✨');
         }).catch(() => {
-            // fallback
             const ta = document.createElement('textarea');
             ta.value = finalCopyText;
             document.body.appendChild(ta);
@@ -744,29 +930,24 @@
     }
 
     // ============================================================
-    //  继续占卜（返回设置页面，保留姓名，清空问题以便重新输入）
+    //  继续占卜
     // ============================================================
     function continueReading() {
-        // 重置所有抽牌相关状态
         selectedCards = [];
         drawnCount = 0;
         finalCopyText = '';
 
-        // 重置卡槽（清空显示）
         placeholders.forEach(el => {
             el.classList.remove('flipped');
             el.innerHTML = '<div class="label">'+ (el.dataset.idx==='0'?'现状':el.dataset.idx==='1'?'深层':'建议') +'</div>';
         });
 
-        // 清空问题输入框，方便用户重新输入（姓名保留）
         questionInput.value = '';
 
-        // 隐藏抽牌区和结果区，显示设置区
         drawArea.style.display = 'none';
         resultArea.style.display = 'none';
         setupArea.style.display = 'block';
 
-        // 重置抽牌按钮（虽然不可见，但保持干净状态）
         deckBtn.disabled = false;
         deckBtn.textContent = '抽牌';
     }
